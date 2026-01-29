@@ -4,6 +4,8 @@ from book.views import *
 
 urlpatterns = [
     path('show', show_book),
-    path('insert', insert_book),
-    path('index', index)
+    path('index', index),
+    path('create', BookAPI.as_view()),
+    path('book-generic', BookGenericAPI.as_view()),
+    path('get-book/<str:id>', GetBookAPI.as_view()),
 ]
