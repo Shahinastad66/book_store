@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from book.models import Book
+from book.models import Book, ImageBook
 import datetime
 
 class BookSerializer(serializers.ModelSerializer):
@@ -20,3 +20,30 @@ class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
         fields = "__all__"
+
+
+class BookCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Book
+        fields = [
+            'name', 'author', 'published_date', 'price', 'currency',
+            'category', 'page_count', 'description', 'is_published'
+        ]
+
+
+class BookUpdateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Book
+        fields = [
+            'name', 'author', 'published_date', 'price', 'currency',
+            'category', 'page_count', 'description', 'is_published'
+        ]
+
+
+class ImageBookUploadSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ImageBook
+        fields = ['image', 'name']

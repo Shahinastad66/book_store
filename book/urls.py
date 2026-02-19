@@ -7,5 +7,5 @@ urlpatterns = [
     path('index', index),
     path('create', BookAPI.as_view()),
     path('book-generic', BookGenericAPI.as_view()),
-    path('get-book/<str:id>', GetBookAPI.as_view()),
+    path('get-book/<int:id>', GetBookAPI.as_view()),
 ]
