@@ -1,11 +1,13 @@
-from django.urls import path
-from book.views import *
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from book.views import BookViewSet, PublishedBooksAPI, MyBooksAPI
 
+
+router = DefaultRouter()
+router.register(r'books', BookViewSet, basename='book') 
+router.register(r'published-books', PublishedBooksAPI, basename='published-book') 
+router.register(r'my-books', MyBooksAPI, basename='my-book') 
 
 urlpatterns = [
-    path('show', show_book),
-    path('index', index),
-    path('create', BookAPI.as_view()),
-    path('book-generic', BookGenericAPI.as_view()),
-    path('get-book/<int:id>', GetBookAPI.as_view()),
+    path('', include(router.urls)),
 ]

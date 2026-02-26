@@ -52,7 +52,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASSES': 
         'rest_framework.pagination.LimitoffsetPagination',
-        'PAGE_SIZE' : 100
+        'PAGE_SIZE' : 10
     
 }
 
@@ -65,6 +65,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'book_store.middleware.ActiveUserCheckMiddleware',
+    'book_store.middleware.RequestLoggingMiddleware',
 ]
 
 ROOT_URLCONF = 'book_store.urls'
@@ -122,6 +124,9 @@ USE_I18N = True
 USE_TZ = True
 
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
@@ -132,3 +137,25 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
