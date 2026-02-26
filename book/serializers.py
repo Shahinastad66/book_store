@@ -3,6 +3,7 @@ from book.models import Book, ImageBook
 import datetime
 
 class BookSerializer(serializers.ModelSerializer):
+    total_images = serializers.IntegerField(read_only=True)
 
     def to_internal_value(self, data):
         data["published_date"] = datetime.datetime.now().date()
@@ -19,7 +20,8 @@ class BookSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Book
-        fields = "__all__"
+        fields = ["name", "published_date", "price", "category", "total_images"]
+        read_only_fields = ("total_images",)
 
 
 class BookCreateSerializer(serializers.ModelSerializer):

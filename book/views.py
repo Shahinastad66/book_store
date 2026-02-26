@@ -7,6 +7,19 @@ import datetime
 from rest_framework.views import APIView
 from book.serializers import BookSerializer
 from rest_framework import generics
+from django.db.models import Count
+from rest_framework.permissions import AllowAny 
+from book.paginations import LargeResultsSetPagination
+from rest_framework import viewsets
+from book.models import Book
+from book.serializers import BookSerializer
+from book.permissions import IsOwnerOrReadOnly
+
+
+class BookViewSet(viewsets.ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsOwnerOrReadOnly]
 
 def show_book(request):
     books = list(Book.objects.values())
@@ -34,8 +47,10 @@ class BookAPI(APIView):
         pass
 
 class BookGenericAPI(generics.ListCreateAPIView):
+    permission_classes = (AllowAny,)
     serializer_class = BookSerializer
-    queryset = Book.objects.all()
+    queryset = Book.objects.annotate(total_images=Count("images"))
+    pagination_class = LargeResultsSetPagination
 
 class GetBookAPI(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BookSerializer

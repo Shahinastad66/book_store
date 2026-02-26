@@ -9,8 +9,14 @@ User = get_user_model()
 class RegisterUserSeralizer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["phone_number", "username", "password"]
-        extra_kwargs = {"password" : {'write_only': True}}
+        fields = ["phone_number", "username", "password", "national_code"]
+        extra_kwargs = {"password" : {"write_only": True},
+                        "national_code" : {"read_only" : True}
+                        }
+
+    def validate_national_code(self, value):
+        if len(value) < 10:
+            raise
 
     def create(self, validated_data):
         user = User(

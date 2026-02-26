@@ -1,11 +1,10 @@
 from rest_framework.views import APIView, Response
-from rest_framework import generics, status
+from rest_framework import status
 from user.serializer import RegisterUserSeralizer
 from rest_framework.permissions import AllowAny
-from rest_framework import status
-from book.serializers import RegisterSerializer, CustomTokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
-from django.contrib.auth import get_user_model
+from rest_framework import generics
+from user.models import User
+
 
 class RegisterUserAPI(APIView):
     permission_classes = (AllowAny,)
@@ -20,12 +19,8 @@ class RegisterUserAPI(APIView):
             return Response({"result" : "error"}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"result" : {"user_id" : user.id}}, status=status.HTTP_200_OK)
 
-    
-class RegisterUser(generics.CreateAPIView):
-    queryset = get_user_model().objects.all()
+
+class Users(generics.ListCreateAPIView):
     permission_classes = (AllowAny,)
-    serializer_class = RegisterSerializer
-
-
-class CustomTokenObtainPairView(TokenObtainPairView):
-    serializer_class = CustomTokenObtainPairSerializer
+    serializer_class = RegisterUserSeralizer
+    queryset = User.objects.all()
